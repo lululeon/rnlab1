@@ -1,19 +1,33 @@
+import React from 'react'
 import { createAppContainer } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
-import SearchScreen from './src/screens/SearchScreen'
-import ShowDetailScreen from './src/screens/ShowDetailScreen'
+import { Provider as BlogProvider } from './src/context/BlogContext'
+import IndexScreen from './src/screens/IndexScreen'
+import SinglePostScreen from './src/screens/SinglePostScreen'
+import NewPostScreen from './src/screens/NewPostScreen'
+import EditPostScreen from './src/screens/EditPostScreen'
 
 const navigator = createStackNavigator(
   {
-    Search: SearchScreen,
-    Detail: ShowDetailScreen,
+    Index: IndexScreen,
+    Single: SinglePostScreen,
+    Create: NewPostScreen,
+    Edit: EditPostScreen,
   },
   {
-    initialRouteName: 'Search',
+    initialRouteName: 'Index',
     defaultNavigationOptions: {
-      title: 'Restaurant Search',
+      title: 'Blog App',
     },
   }
 )
 
-export default createAppContainer(navigator)
+const App = createAppContainer(navigator)
+
+export default () => {
+  return (
+    <BlogProvider>
+      <App />
+    </BlogProvider>
+  )
+}
