@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {
   Text,
   StyleSheet,
@@ -10,7 +10,24 @@ import { Context as BlogContext } from '../context/BlogContext'
 import { Feather } from '@expo/vector-icons'
 
 const IndexScreen = ({ navigation }) => {
-  const { state: blogPosts, deleteBlogPost } = useContext(BlogContext)
+  const { state: blogPosts, deleteBlogPost, getBlogPosts } = useContext(
+    BlogContext
+  )
+
+  useEffect(() => {
+    // this will update states on first load
+    getBlogPosts()
+
+    // also pull latest data whenever we nav back to this screen
+    const listener = navigation.addListener('didFocus', () => {
+      getBlogPosts()
+    })
+
+    // cleanup: don't leave listener dangling
+    return () => {
+      listener.remove()
+    }
+  }, [])
 
   return (
     <View>
